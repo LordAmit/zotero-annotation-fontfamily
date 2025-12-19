@@ -1,0 +1,4 @@
+/* Only apply if inside the viewerContainer */
+#viewerContainer textarea.textAnnotation {
+    font-family: "Shantell Sans" !important;
+}

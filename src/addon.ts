@@ -1,42 +1,18 @@
-import { config } from "../package.json";
-import { ColumnOptions, DialogHelper } from "zotero-plugin-toolkit";
-import hooks from "./hooks";
-import { createZToolkit } from "./utils/ztoolkit";
+import { ZoteroPluginToolkit } from "zotero-plugin-toolkit";
 
-class Addon {
-  public data: {
-    alive: boolean;
-    config: typeof config;
-    // Env type, see build.js
-    env: "development" | "production";
-    initialized?: boolean;
-    ztoolkit: ZToolkit;
-    locale?: {
-      current: any;
-    };
-    prefs?: {
-      window: Window;
-      columns: Array<ColumnOptions>;
-      rows: Array<{ [dataKey: string]: string }>;
-    };
-    dialog?: DialogHelper;
-  };
-  // Lifecycle hooks
-  public hooks: typeof hooks;
-  // APIs
-  public api: object;
-
+export default class Addon {
   constructor() {
-    this.data = {
-      alive: true,
-      config,
-      env: __env__,
-      initialized: false,
-      ztoolkit: createZToolkit(),
+    Zotero.debug("Annotation Font Style Addon Initialized");
+  }
+
+  log(msg: string) {
+    Zotero.debug(`[Annotation Font]: ${msg}`);
+  }
+
+  // This provides the toolkit instance to our hooks
+  get data() {
+    return {
+      ztoolkit: (globalThis as any).ztoolkit as ZoteroPluginToolkit,
     };
-    this.hooks = hooks;
-    this.api = {};
   }
 }
-
-export default Addon;
