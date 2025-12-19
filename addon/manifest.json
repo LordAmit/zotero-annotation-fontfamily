@@ -9,10 +9,6 @@
     "48": "content/icons/favicon@0.5x.png",
     "96": "content/icons/favicon.png"
   },
-  "options_ui": {
-    "page": "content/preferences.xhtml",
-    "browser_style": true
-  },
   "applications": {
     "zotero": {
       "id": "__addonID__",

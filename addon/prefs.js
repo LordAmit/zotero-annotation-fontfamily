@@ -1,1 +1,1 @@
-pref("extensions.zotero.fontstyle.fontFamily", "Shantell Sans");
+pref("extensions.zotero.fontstyle.annotationFontFamily", "Shantell Sans");

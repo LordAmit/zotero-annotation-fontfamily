@@ -7,7 +7,7 @@
 declare namespace _ZoteroTypes {
   interface Prefs {
     PluginPrefsMap: {
-      "fontFamily": string;
+      "annotationFontFamily": string;
     };
   }
 }

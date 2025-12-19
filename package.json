@@ -6,8 +6,8 @@
   "config": {
     "addonName": "Annotation Font Style",
     "addonID": "font-style@example.com",
-    "addonRef": "fontstyle",
-    "addonInstance": "FontStyle",
+    "addonRef": "annotationFontStyle",
+    "addonInstance": "annotationFontStyle",
     "prefsPrefix": "extensions.zotero.fontstyle"
   },
   "repository": {

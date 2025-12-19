@@ -1,43 +1,26 @@
 export async function onStartup() {
-  Zotero.debug("Annotation Font Plugin: Startup");
-
-  try {
-    const toolkit = (globalThis as any).addon.data.ztoolkit;
-
-    // Zotero 7 Preference Pane Registration
-    toolkit.preference.registerPane({
-      pluginID: "font-style@example.com",
-      src: rootURI + "content/preferences.xhtml",
-      label: "Annotation Font",
-      // Adding an ID helps Zotero track the pane
-      id: "fontstyle-pane"
-    });
-
-    Zotero.debug("Annotation Font Plugin: Pane Registered");
-  } catch (e) {
-    Zotero.debug("Annotation Font Plugin: Pane Error: " + e);
-  }
+  Zotero.debug("annotationFontStyle: Starting in Config-only mode");
 
   updateStyles();
-  // Ensure we observe the exact preference key
-  Zotero.Prefs.registerObserver("fontstyle.fontFamily", updateStyles);
+
+  // Watch the new key name
+  Zotero.Prefs.registerObserver("extensions.zotero.fontstyle.annotationFontFamily", updateStyles, true);
 }
 
-function updateStyles() {
+export function updateStyles() {
   try {
     const Cc = Components.classes as any;
-    const Ci = Components.interfaces;
-    const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Ci.nsIStyleSheetService);
-    const io = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+    const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
+    const io = Cc["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-    // Now that package.json is fixed, this will return "Shantell Sans"
-    const fontName = Zotero.Prefs.get("extensions.zotero.fontstyle.fontFamily") || "Shantell Sans";
+    // Pull from the new key name
+    const fontName = Zotero.Prefs.get("extensions.zotero.fontstyle.annotationFontFamily", true) || "Shantell Sans";
+    Zotero.debug("annotationFontStyle: Applying font -> " + fontName);
 
     const css = `
       textarea.textAnnotation,
       .customAnnotationLayer textarea,
       .pdfViewer .textAnnotation,
-      .annotation-text,
       .annotation-row :is(.description, .comment, .description-text) {
           font-family: "${fontName}", sans-serif !important;
       }
@@ -46,30 +29,19 @@ function updateStyles() {
     const uri = io.newURI("data:text/css," + encodeURIComponent(css));
 
     if ((globalThis as any).currentFontURI) {
-      sss.unregisterSheet((globalThis as any).currentFontURI, sss.AGENT_SHEET);
+      try { sss.unregisterSheet((globalThis as any).currentFontURI, sss.AGENT_SHEET); } catch (e) { }
     }
 
     sss.loadAndRegisterSheet(uri, sss.AGENT_SHEET);
     (globalThis as any).currentFontURI = uri;
-
-    Zotero.debug("Annotation Font Plugin: Applied " + fontName);
   } catch (e) {
-    Zotero.debug("Annotation Font Plugin: CSS Error: " + e);
+    Zotero.debug("annotationFontStyle Error: " + e);
   }
 }
 
-
 export function onShutdown() {
-  // Use a try-catch to ignore errors if the observer isn't there
-  try { Zotero.Prefs.unregisterObserver("fontstyle.fontFamily", updateStyles); } catch (e) { }
-
-  const Cc = Components.classes as any;
-  const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
-  if ((globalThis as any).currentFontURI) {
-    try {
-      sss.unregisterSheet((globalThis as any).currentFontURI, sss.AGENT_SHEET);
-    } catch (e) { }
-  }
+  // Update unregister to match
+  Zotero.Prefs.unregisterObserver("extensions.zotero.fontstyle.annotationFontFamily", updateStyles);
 }
 
 export async function onMainWindowLoad() { }
