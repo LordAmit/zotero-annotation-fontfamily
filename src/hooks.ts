@@ -13,16 +13,30 @@ export function updateStyles() {
     const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
     const io = Cc["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-    // Pull from the new key name
+    // Pull both preferences
     const fontName = Zotero.Prefs.get("extensions.zotero.fontstyle.annotationFontFamily", true) || "Shantell Sans";
-    Zotero.debug("annotationFontStyle: Applying font -> " + fontName);
+    const fontSize = Zotero.Prefs.get("extensions.zotero.fontstyle.annotationFontSize", true) || "13";
+
+    Zotero.debug(`annotationFontStyle: Applying ${fontName} at ${fontSize}px`);
 
     const css = `
       textarea.textAnnotation,
-      .customAnnotationLayer textarea,
-      .pdfViewer .textAnnotation,
+      .textAnnotation,
+      .annotation-text,
       .annotation-row :is(.description, .comment, .description-text) {
           font-family: "${fontName}", sans-serif !important;
+          font-size: ${fontSize}px !important;
+          overflow: visible !important;
+          white-space: pre-wrap !important;
+          line-height: 1.3 !important;
+          box-sizing: border-box !important;
+      }
+
+      /* Help the container stay flexible */
+      section.textWidgetAnnotation,
+      .textWidgetAnnotation {
+          width: auto !important;
+          min-width: 50px !important;
       }
     `.replace(/\n/g, "");
 
