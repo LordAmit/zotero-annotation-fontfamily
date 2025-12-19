@@ -1,2 +1,1 @@
-pref("enable", true);
-pref("input", "This is input");
+pref("extensions.zotero.fontstyle.fontFamily", "Shantell Sans");

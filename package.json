@@ -8,7 +8,7 @@
     "addonID": "font-style@example.com",
     "addonRef": "fontstyle",
     "addonInstance": "FontStyle",
-    "prefsPrefix": "extensions.zotero.addontemplate"
+    "prefsPrefix": "extensions.zotero.fontstyle"
   },
   "repository": {
     "type": "git",
