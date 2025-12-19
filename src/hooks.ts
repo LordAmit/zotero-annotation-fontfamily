@@ -13,11 +13,10 @@ export function updateStyles() {
     const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Components.interfaces.nsIStyleSheetService);
     const io = Cc["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-    // Pull both preferences
     const fontName = Zotero.Prefs.get("extensions.zotero.fontstyle.annotationFontFamily", true) || "Shantell Sans";
     const fontSize = Zotero.Prefs.get("extensions.zotero.fontstyle.annotationFontSize", true) || "13";
 
-    Zotero.debug(`annotationFontStyle: Applying ${fontName} at ${fontSize}px`);
+    Zotero.debug(`annotationFontStyle: Applying Font: ${fontName}, Size: ${fontSize}`);
 
     const css = `
       textarea.textAnnotation,
@@ -26,17 +25,16 @@ export function updateStyles() {
       .annotation-row :is(.description, .comment, .description-text) {
           font-family: "${fontName}", sans-serif !important;
           font-size: ${fontSize}px !important;
-          overflow: visible !important;
-          white-space: pre-wrap !important;
+
+          /* Leave color, backgrounds, and borders to Zotero defaults */
           line-height: 1.3 !important;
-          box-sizing: border-box !important;
+          white-space: pre-wrap !important;
       }
 
-      /* Help the container stay flexible */
+      /* Minimal layout adjustment to help with custom font spacing */
       section.textWidgetAnnotation,
       .textWidgetAnnotation {
-          width: auto !important;
-          min-width: 50px !important;
+          min-width: 40px !important;
       }
     `.replace(/\n/g, "");
 
