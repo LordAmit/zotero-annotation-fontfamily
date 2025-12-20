@@ -7,9 +7,12 @@ This plugin lets you change the font of displayed annotations in Zotero.
 
 ## More Details
 
-In Zotero, there are no settings to change the font of annotations on PDFs. Installing this plugin adds a new configuration option that can be accessed from the *config editor* `extensions.zotero.fontstyle.annotationFontFamily`.
+In Zotero, there are no settings to change the font of annotations on PDFs. Installing this plugin adds two new configuration options that can be accessed from the *config editor*
+1. `extensions.zotero.fontstyle.annotationFontFamily`.
+2. `extensions.zotero.fontstyle.annotationFontSize`
 
-You can type in the font name, and it will be applied. By default, it is set to *Shantell Sans*.
+You can type in the font name, and it will be applied.
+By default, it is set to `Shantell Sans` with a font size of `13`.
 
 ## Disclaimer
 
